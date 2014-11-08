@@ -1,3 +1,17 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+    background-color:#030303;
+}
+img {
+    width:20%;
+    float:left; 
+     margin:0;
+}
+
+/*Filter styles*/
+.red {-webkit-filter: hue-rotate(0deg);}
+.blue {-webkit-filter: hue-rotate(215deg);}
+.green {-webkit-filter: hue-rotate(90deg);}
+.white {-webkit-filter: grayscale(1) brightness(90);}
