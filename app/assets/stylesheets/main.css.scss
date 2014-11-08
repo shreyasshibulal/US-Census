@@ -2,12 +2,32 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 body {
-    background-color:#030303;
+    background-color:#FFFFCC;
 }
 img {
-    width:20%;
-    float:left; 
+    float:left;
      margin:0;
+}
+
+/*Div Layout styles*/
+#left {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}
+#map {
+    width:350px;
+    float:left;
+    padding:10px; 
+}
+#key {
+    background-color:#eeeeee;
+    width:350px;
+    float:left;
+    padding:10px; 
 }
 
 /*Filter styles*/
