@@ -1,8 +1,7 @@
 Feature: Population Count
 		
 		As a user, I want to get information on population count, 
-		by providing parameters of race and age for a given 
-		set of states.
+		for all ages and race for a given set of states.
 		
 		Scenario: Load Main Page
 			Given I am on the main page
