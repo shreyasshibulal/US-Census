@@ -10,6 +10,8 @@ class MainController < ApplicationController
   def index
   end
 
+  helper_method :population_by_sex
+
   def initialize()
     super
     page = open("http://api.census.gov/data/2010/sf1/variables.xml")
