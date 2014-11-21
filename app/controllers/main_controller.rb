@@ -16,6 +16,14 @@ class MainController < ApplicationController
     super
     page = open("http://api.census.gov/data/2010/sf1/variables.xml")
     @variables = XmlSimple.xml_in(page.read)['vars'][0]['var']
+    @data_array = ""
+  end
+
+  def query
+    # can access: params[:field]
+    # set @data_array to the newly formatted query
+    
+    render :index
   end
   
   def get_all_state_info(variable_id)
