@@ -22,7 +22,7 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
-    
+    Datum
     render :index
   end
   
