@@ -22,21 +22,37 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
-    Datum
-    render :index
+    get_all_state_info(params[:field])
   end
   
   def get_all_state_info(variable_id)
-    states = ["1","2","4","5","6","8","9","10","11","12","13","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56","72"]
-    states_population = Hash.new
-    states.each{|state|
-      page = open("http://api.census.gov/data/2010/sf1?key=d00e83d203212bfab72100f4b5c32448e5ca8647&get="+variable_id+"&for=state:"+state)
+    all_states_info = "{"
+      page = open("http://api.census.gov/data/2010/sf1?key=d00e83d203212bfab72100f4b5c32448e5ca8647&get="+variable_id+"&for=state:*")
       info = page.read
-      states_population[state] = info.match(/"[0-9]+"/)[0].gsub(/"/,"" ).to_i
-    }
-    return states_population
+      info.scan(/\[".*?(?=")",".*?(?=")"\]/){|state_info| 
+        values = state_info.match(/(")(.*?(?="))(",")(.*?(?="))(")/).captures
+        not_needed, value, not_needed, state, not_needed = values
+        if (value != variable_id && state != "state")
+          all_states_info=all_states_info+"\""+state+"\":\""+value+"\","
+        end
+      }
+      return all_states_info.gsub(/,$/,"}")
   end
-  
+  def dictionary_to_hash(dictionary)
+    hash = Hash.new
+    dictionary.scan(/".*?(?=")":".*?(?=")"/){|entry|
+      not_needed, key, not_needed, value, not_needed =  entry.match(/(")(.*?(?="))(":")(.*?(?="))(")/).captures
+      hash[key] = value.to_i
+      }
+      return hash
+  end
+  def hash_to_dictionary(hash)
+    dictionary= "{"
+    hash.each{|key, value|
+      dictionary = dictionary +"\""+key+"\":\""+value.to_s+"\","
+    }
+    return dictionary.gsub(/,$/,"}")
+  end
   def population_by_age_race_sex(age, race, sex)
     variable_id=""
     @variables.each{|variable|
@@ -73,12 +89,12 @@ class MainController < ApplicationController
       }
     if (variable_id_male!="" && variable_id_female!="")
       total_population= Hash.new
-      male_population = get_all_state_info(variable_id_male)
-      female_population = get_all_state_info(variable_id_female)
+      male_population = dictionary_to_hash(get_all_state_info(variable_id_male))
+      female_population = dictionary_to_hash(get_all_state_info(variable_id_female))
       male_population.each {|state, population|
         total_population[state] = population + female_population[state]  
       }
-      return total_population
+      return hash_to_dictionary(total_population)
     end    
   end
   
@@ -111,7 +127,7 @@ class MainController < ApplicationController
       if (sex=="male")
         return get_all_state_info(variable_id)
       else
-        male_population = get_all_state_info(variable_id)
+        male_population = dictionary_to_hash(get_all_state_info(variable_id))
         variable_id_total=""
         @variables.each{|variable|
           if (variable['xml:id'] && variable['label'] && variable['concept'])
@@ -123,12 +139,12 @@ class MainController < ApplicationController
         }
         if (variable_id_total !="")
           female_population = Hash.new
-          total_population = get_all_state_info(variable_id_total)
+          total_population = dictionary_to_hash(get_all_state_info(variable_id_total))
           total_population.each {|state, population|
             female_population[state] = population - male_population[state]  
           }
         end
-        return female_population
+        return hash_to_dictionary(female_population)
       end
     end
   end
@@ -154,12 +170,12 @@ class MainController < ApplicationController
       }
     if (variable_id_male!="" && variable_id_female!="")
       total_population= Hash.new
-      male_population = get_all_state_info(variable_id_male)
-      female_population = get_all_state_info(variable_id_female)
+      male_population = dictionary_to_hash(get_all_state_info(variable_id_male))
+      female_population = dictionary_to_hash(get_all_state_info(variable_id_female))
       male_population.each {|state, population|
         total_population[state] = population + female_population[state]  
       }
-      return total_population
+      return hash_to_dictionary(total_population)
     end
   end
   
@@ -177,7 +193,7 @@ class MainController < ApplicationController
       if (sex=="male")
         return get_all_state_info(variable_id)
       else
-        male_population = get_all_state_info(variable_id)
+        male_population = dictionary_to_hash(get_all_state_info(variable_id))
         variable_id_total=""
         @variables.each{|variable|
           if (variable['xml:id'] && variable['label'] && variable['concept'])
@@ -189,12 +205,12 @@ class MainController < ApplicationController
         }
         if (variable_id_total !="")
           female_population = Hash.new
-          total_population = get_all_state_info(variable_id_total)
+          total_population = dictionary_to_hash(get_all_state_info(variable_id_total))
           total_population.each {|state, population|
             female_population[state] = population - male_population[state]  
           }
         end
-        return female_population
+        return hash_to_dictionary(female_population)
       end
     end 
   end
