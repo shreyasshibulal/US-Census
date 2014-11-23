@@ -13,13 +13,27 @@ Then(/^my two states should be white$/) do
 end
 
 When(/^I query for male population count$/) do
-  # pass
+  # html = page.evaluate_script("document.getElementById('answer-15988092').innerHTML")
+  # html.should include('this is <b>bold</b> "text"')
+  # page.evaluate_script("onChange()");
+  visit "/query/PCT1001000"
 end
 
 Then(/^State (\d+) should match (\d+)$/) do |arg1, arg2|
   info = MainController.new
   pctMale = info.population_by_sex("male")
   pctMale[arg1] == arg2
+end
+
+Then(/^there should be no results yet$/) do
+  # assert page.has_content?('id="results"></p>')
+  node = find_by_id('results')
+  assert node.native.inner_html == ""
+end
+
+Then(/^it should navigate to results page$/) do
+  assert find_by_id('query_title').native.inner_html == "PCT1001000"
+  assert page.current_path == "/query/PCT1001000"
 end
 
 # When "I select a query" do

@@ -14,6 +14,15 @@ Feature: Population Count
 			Then State 42 should match 6190363
 			And State 34 should match 4279600
 
+		Scenario: No initial results
+			Given I am on the main page
+			Then there should be no results yet
+
+		Scenario: Navigate to results page
+			Given I am on the main page
+			When I query for male population count
+			Then it should navigate to results page
+
 #		Scenario: Submit Query
 #			Given I am on the main page
 #			When I select a query
