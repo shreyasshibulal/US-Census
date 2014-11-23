@@ -24,7 +24,7 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
-    get_all_state_info(params[:field])
+    @data_array = get_all_state_info(params[:field])
     @query_title = params[:field]
     render :index
   end
