@@ -23,6 +23,11 @@ Feature: Population Count
 			When I query for male population count
 			Then it should navigate to results page
 
+		Scenario: Database Check
+			Given I am on the main page
+			When I query for 42
+			Then the database should contain an entry for 42
+
 #		Scenario: Submit Query
 #			Given I am on the main page
 #			When I select a query
