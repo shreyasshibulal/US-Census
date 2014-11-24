@@ -26,13 +26,13 @@ class MainController < ApplicationController
     # set @data_array to the newly formatted query
     var = params[:field]
     @data_array = get_all_state_info(var)
-    Datum.new(:key => var, :value => @data_array).save
     @query_title = var
     render :index
   end
   
   def get_all_state_info(variable_id)
-    all_states_info = "{"
+    if (Datum.where("key = ?", variable_id).blank?)
+      all_states_info = "{"
       page = open("http://api.census.gov/data/2010/sf1?key=d00e83d203212bfab72100f4b5c32448e5ca8647&get="+variable_id+"&for=state:*")
       info = page.read
       info.scan(/\[".*?(?=")",".*?(?=")"\]/){|state_info| 
@@ -42,7 +42,12 @@ class MainController < ApplicationController
           all_states_info=all_states_info+"\""+state+"\":\""+value+"\","
         end
       }
-      return all_states_info.gsub(/,$/,"}")
+      all_state_info = all_states_info.gsub(/,$/,"}")
+      Datum.new(:key => variable_id, :value =>all_state_info).save
+      return all_states_info
+    else
+      return Datum.where("key = ?", variable_id).first[:value]
+    end
   end
   def dictionary_to_hash(dictionary)
     hash = Hash.new
