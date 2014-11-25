@@ -33,7 +33,11 @@ class MainController < ApplicationController
   def get_all_state_info(variable_id)
     if (Datum.where("key = ?", variable_id).blank?)
       all_states_info = "{"
-      page = open("http://api.census.gov/data/2010/sf1?key=d00e83d203212bfab72100f4b5c32448e5ca8647&get="+variable_id+"&for=state:*")
+      begin 
+        page = open("http://api.census.gov/data/2010/sf1?key=d00e83d203212bfab72100f4b5c32448e5ca8647&get="+variable_id+"&for=state:*")
+      rescue
+        return ""
+      end
       info = page.read
       info.scan(/\[".*?(?=")",".*?(?=")"\]/){|state_info| 
         values = state_info.match(/(")(.*?(?="))(",")(.*?(?="))(")/).captures

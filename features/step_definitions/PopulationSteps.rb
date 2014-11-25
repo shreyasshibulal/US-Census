@@ -16,7 +16,7 @@ When(/^I query for male population count$/) do
   # html = page.evaluate_script("document.getElementById('answer-15988092').innerHTML")
   # html.should include('this is <b>bold</b> "text"')
   # page.evaluate_script("onChange()");
-  visit "/query/PCT1001000"
+  visit "/query/PCT012A119"
 end
 
 Then(/^State (\d+) should match (\d+)$/) do |arg1, arg2|
@@ -32,8 +32,16 @@ Then(/^there should be no results yet$/) do
 end
 
 Then(/^it should navigate to results page$/) do
-  assert find_by_id('query_title').native.inner_html == "PCT1001000"
-  assert page.current_path == "/query/PCT1001000"
+  assert find_by_id('query_title').native.inner_html == "PCT012A119"
+  assert page.current_path == "/query/PCT012A119"
+end
+
+When(/^I query for (\d+)$/) do |arg1|
+  visit "/query/" + arg1
+end
+
+Then(/^the database should contain an entry for (\d+)$/) do |arg1|
+  assert (Datum.where("key = ?", arg1).blank? == false)
 end
 
 # When "I select a query" do
