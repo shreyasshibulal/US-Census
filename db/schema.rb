@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20141121010651) do
 
   create_table "data", force: true do |t|
     t.string   "key"
-    t.string   "value"
+    t.text     "value",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
