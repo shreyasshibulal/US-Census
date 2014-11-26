@@ -6,12 +6,12 @@
 require 'xmlsimple'
 require 'open-uri'
 
-class CreateProducts < ActiveRecord::Migration
-  def change
-      change_column :data, :value, :text
-    end
-  end
-end
+# class CreateProducts < ActiveRecord::Migration
+#   def change
+#       change_column :data, :value, :text
+#     end
+#   end
+# end
 
 class MainController < ApplicationController
   def index
