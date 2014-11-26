@@ -8,4 +8,15 @@ class CreateData < ActiveRecord::Migration
     change_column :data, :value, :text
     end
   end
+
+  def self.up
+    change_table :tablename do |t|
+      t.change :value, :text
+    end
+  end
+  def self.down
+    change_table :tablename do |t|
+      t.change :value, :text
+    end
+  end
 end
