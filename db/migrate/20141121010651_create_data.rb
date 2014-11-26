@@ -5,6 +5,7 @@ class CreateData < ActiveRecord::Migration
       t.string :value
 
       t.timestamps
+    change_column :data, :value, :text
     end
   end
 end
