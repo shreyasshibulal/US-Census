@@ -1,4 +1,4 @@
-<h1>Main#index</h1>
+<h1>Census Query</h1>
 <p id="query_title"><%=@query_title%></p>
 <body onload="onLoad()">
 <div id="left">
@@ -28,37 +28,88 @@ function onChange() {
     return false;
 }
 
+function getFirst(infoLookup)
+{
+    for (var key in infoLookup)
+        return key;
+}
+
+function roundUp(x){
+
+    var y = Math.pow(10, x.toString().length-1);
+
+    x = (x/y);
+    x = Math.ceil(x);
+    x = x*y;
+    return x;
+}
+
+function roundDown(x){
+
+    var y = Math.pow(10, x.toString().length-1);
+
+    x = (x/y);
+    x = Math.floor(x);
+    x = x*y;
+    return x;
+}
+
 function onLoad() {
 
-    var start = 4000000;
-    var increment = 500000;
+    var test = document.getElementById("results").innerHTML;
+    var infoLookup = JSON.parse(test);
+
+    var min = parseInt(getFirst(infoLookup));
+    var max = min;
+
+    for (var key in infoLookup) {
+        var asInt = parseInt(infoLookup[key]);
+        if (asInt < min)
+            min = asInt;
+        if (asInt > max)
+            max = asInt;
+    }
+
+    min = roundDown(min);
+    max = roundUp(max);
+
+    var start = min;
+    var increment = (max-min)/5;
+
+    for (i = 1; i <= 5; i++)
+    {
+        var text = "> " + (start + 5 * increment).toLocaleString();
+        if (i > 1)
+        {
+            text = (start + (5-i) * increment).toLocaleString() + " - " + (start + (5-(i-1)) * increment).toLocaleString();
+        }
+
+        document.getElementById("K"+i.toString()).className = "red"+(5-i).toString();
+        document.getElementById("K"+i.toString()+"_text").innerHTML = text;
+    }
 
     // Create query string
     // var x = document.getElementById("querySelect").value;
 
-    // Key 1
-    document.getElementById("K1").className = "red4";
-    document.getElementById("K1_text").innerHTML = "> 6,000,000";
+    // // Key 1
+    // document.getElementById("K1").className = "red4";
+    // document.getElementById("K1_text").innerHTML = "> 6,000,000";
 
-    // Key 2
-    document.getElementById("K2").className = "red3";
-    document.getElementById("K2_text").innerHTML = "5,500,000 - 6,000,000";
+    // // Key 2
+    // document.getElementById("K2").className = "red3";
+    // document.getElementById("K2_text").innerHTML = "5,500,000 - 6,000,000";
 
-    // Key 3
-    document.getElementById("K3").className = "red2";
-    document.getElementById("K3_text").innerHTML = "5,000,000 - 5,500,000";
+    // // Key 3
+    // document.getElementById("K3").className = "red2";
+    // document.getElementById("K3_text").innerHTML = "5,000,000 - 5,500,000";
 
-    // Key 4   
-    document.getElementById("K4").className = "red1";
-    document.getElementById("K4_text").innerHTML = "4,500,000 - 5,000,000";
+    // // Key 4   
+    // document.getElementById("K4").className = "red1";
+    // document.getElementById("K4_text").innerHTML = "4,500,000 - 5,000,000";
 
-    // Key 5
-    document.getElementById("K5").className = "red0";
-    document.getElementById("K5_text").innerHTML = "4,000,000 - 4,500,000";
-
-    // var infoLookup = JSON.parse("{\"34\": \"4279600\", \"42\": \"6190363\"}");
-    var test = document.getElementById("results").innerHTML;
-    var infoLookup = JSON.parse(test);
+    // // Key 5
+    // document.getElementById("K5").className = "red0";
+    // document.getElementById("K5_text").innerHTML = "4,000,000 - 4,500,000";
 
     // An important lookup table
     var statesLookup = {"AL": "01", "AK": "02", "AZ": "04", "AR": "05", "CA": "06", "CO": "08", "CT": "09", "DE": "10", "DC": "11", "FL": "12", "GA": "13", "HI": "15", "ID": "16", "IL": "17", "IN": "18", "IA": "19", "KS": "20", "KY": "21", "LA": "22", "ME": "23", "MD": "24", "MA": "25", "MI": "26", "MN": "27", "MS": "28", "MO": "29", "MT": "30", "NE": "31", "NV": "32", "NH": "33", "NJ": "34", "NM": "35", "NY": "36", "NC": "37", "ND": "38", "OH": "39", "OK": "40", "OR": "41", "PA": "42", "RI": "44", "SC": "45", "SD": "46", "TN": "47", "TX": "48", "UT": "49", "VT": "50", "VA": "51", "WA": "53", "WV": "54", "WI": "55", "WY": "56", "PR": "72"};
@@ -99,31 +150,31 @@ function onLoad() {
     <tr>
         <td>
             <%= image_tag("KeySquare.png", :id => "K1", :class => "white") %>
-            <td id="K1_text">Key 1</td>
+            <td id="K1_text"></td>
         </td>
     </tr>
     <tr>
         <td>
             <%= image_tag("KeySquare.png", :id => "K2", :class => "white") %>
-            <td id="K2_text">Key 2</td>
+            <td id="K2_text"></td>
         </td>
     </tr>
     <tr>
         <td>
             <%= image_tag("KeySquare.png", :id => "K3", :class => "white") %>
-            <td id="K3_text">Key 3</td>
+            <td id="K3_text"></td>
         </td>
     </tr>
     <tr>
         <td>
             <%= image_tag("KeySquare.png", :id => "K4", :class => "white") %>
-            <td id="K4_text">Key 4</td>
+            <td id="K4_text"></td>
         </td>
     </tr>
     <tr>
         <td>
             <%= image_tag("KeySquare.png", :id => "K5", :class => "white") %>
-            <td id="K5_text">Key 5</td>
+            <td id="K5_text"></td>
         </td>
     </tr>
 </table>
