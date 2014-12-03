@@ -31,10 +31,20 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
+    # PCT012A119,PCT012A118
     var = params[:field]
     @data_array = get_all_state_info(var)
     @query_title = var
     render :index
+  end
+
+  def search
+    # can access: params[:sex], params[:age], params[:race]
+    # where sex == "m|f|all" age == "[min]-[max]" and race == '[race1],[race2]...'
+    # any field could be 'all', for total
+    # eg. /search/m/47-49/white,hispanic
+    # eg. /search/f/all/white
+    # eg. /search/all/45-45/black
   end
   
   def get_all_state_info(variable_id)
