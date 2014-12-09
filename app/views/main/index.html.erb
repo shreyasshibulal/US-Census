@@ -3,12 +3,30 @@
 <body onload="onLoad()">
 <div id="left">
 Select Query:<br>
-<select name="querySelect" id="querySelect" onchange="onChange()">
-  <option selected disabled value=''></option>"
+<select name="querySelect" id="querySelect"><!--  onchange="onChange()"> -->
   <option id="select1" value="PCT012A119">Population of Men</option>
   <option id="select2" value="PCT012A118">Population of Women</option>
 </select>
+<br>
+<button type="button" onclick="onChange()">Search</button>
+<br>
+Advanced Search:
+<br>
+<form>
+    <input id="s1" type="radio" name="sex" value="m" checked>Male
+    <input id="s2" type="radio" name="sex" value="f">Female
+    <input id="s3" type="radio" name="sex" value="all">All
+</form> 
+<input id="amount" readonly style="font-weight:bold;background-color:#eeeeee; border: solid 1px #707070;">
+<div id="slider-range"></div>
+<input type="checkbox" id="race1" value="white">White<br>
+<input type="checkbox" id="race2" value="hispanic">Hispanic<br>
+<input type="checkbox" id="race3" value="black">Black<br>
+
+<button type="button" onclick="onAdvanceSearch()">Search</button>
+<br>
 </div>
+
 <div id="popup">
     <a> 
     <%= image_tag("PA.png", :style => "position:absolute; TOP:47px; LEFT:177px;", :id => "PA", :class => "white") %>
@@ -20,7 +38,71 @@ Select Query:<br>
     </a>
 </div>
 
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">  
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
 <script>
+  $(function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 1,
+      max: 105,
+      values: [ 25, 80 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "Ages: " + ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "Ages: " + $( "#slider-range" ).slider( "values", 0 ) +
+      "-" + $( "#slider-range" ).slider( "values", 1 ) );
+  });
+</script>
+
+<script>
+
+alert("HERESERS");
+
+function onAdvanceSearch() {
+    var gender = "all";
+    
+    if (document.getElementById('s1').checked) {
+        gender = document.getElementById('s1').value;
+    }
+    else if (document.getElementById('s2').checked) {
+        gender = document.getElementById('s2').value;
+    }
+
+    var age = document.getElementById("amount").value;
+    age = age.substring(6, 100);
+
+    var race = "";
+
+    for (i = 1; i < 15; i++)
+    {
+        var check = document.getElementById('race' + i.toString());
+        if (check != null)
+        {
+            if (check.checked){
+                race += check.value + ",";
+            }
+        }
+        else
+        {
+            race = race.substring(0, race.length - 1);
+            break;
+        }
+    }
+
+    if (race == "")
+    {
+        race = "all";
+    }
+
+    location.href = "/search/" + gender + "/" + age + "/" + race;
+    return false;
+}
+
 
 function onChange() {
     var x = document.getElementById("querySelect").value;
