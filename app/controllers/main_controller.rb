@@ -91,7 +91,7 @@ class MainController < ApplicationController
     
     sex = params[:sex]
     age = params[:age]
-    sex = params[:sex]
+    race = params[:race]
     if (sex!="all" && age=="all" && race=="all")
       if (sex=="f")
         return population_by_sex("female")
