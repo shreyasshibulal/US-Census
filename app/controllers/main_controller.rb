@@ -28,8 +28,6 @@ class MainController < ApplicationController
     @query_title = "Please Select a Query"
   end
 
-<<<<<<< HEAD
-=======
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
@@ -39,10 +37,7 @@ class MainController < ApplicationController
     @query_title = var
     render :index
   end
->>>>>>> c3f80e9c71fd86784742f25d59e2b65b01e9f46a
 
-  
-  
   def get_all_state_info(variable_id)
     if (Datum.where("key = ?", variable_id).blank?)
       all_states_info = "{"
