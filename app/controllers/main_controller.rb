@@ -28,6 +28,18 @@ class MainController < ApplicationController
     @query_title = "Please Select a Query"
   end
 
+<<<<<<< HEAD
+=======
+  def query
+    # can access: params[:field]
+    # set @data_array to the newly formatted query
+    # PCT012A119
+    var = params[:field]
+    @data_array = get_all_state_info(var)
+    @query_title = var
+    render :index
+  end
+>>>>>>> c3f80e9c71fd86784742f25d59e2b65b01e9f46a
 
   
   

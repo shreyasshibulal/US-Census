@@ -35,6 +35,8 @@ group :test, :development do
     gem 'launchy'
     # Use sqlite3 as the database for Active Record
     gem 'sqlite3'
+    gem 'simplecov'
+    gem 'rspec-rails'
 end
 
 group :production do
