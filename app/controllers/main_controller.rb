@@ -31,7 +31,7 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
-    # PCT012A119
+    # PCT012A119,PCT012A118
     var = params[:field]
     @data_array = get_all_state_info(var)
     @query_title = var
