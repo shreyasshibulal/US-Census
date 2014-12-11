@@ -28,17 +28,9 @@ class MainController < ApplicationController
     @query_title = "Please Select a Query"
   end
 
-  def query
-    # can access: params[:field]
-    # set @data_array to the newly formatted query
-    # PCT012A119,PCT012A118
-    var = params[:field]
-    @data_array = get_all_state_info(var)
-    @query_title = var
-    render :index
-  end
-
   def get_all_state_info(variable_id)
+    p variable_id
+
     if (Datum.where("key = ?", variable_id).blank?)
       all_states_info = "{"
       begin 
@@ -61,6 +53,7 @@ class MainController < ApplicationController
       return Datum.where("key = ?", variable_id).first[:value]
     end
   end
+
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
@@ -68,7 +61,8 @@ class MainController < ApplicationController
     vars = params[:field]
      @query_title = vars
     sum = Hash.new
-    vars.scan(/(.*?(?=,))|(.*?(?=\z))/).each{ |var|
+    # vars.scan(/((.*?(?=,))|(.*?(?=\z)))/) { |var|
+    vars.rpartition(",").each { |var|
       info = dictionary_to_hash(get_all_state_info(var))
       if (sum["01"])
         info.each {|state, population|
