@@ -29,8 +29,6 @@ class MainController < ApplicationController
   end
 
   def get_all_state_info(variable_id)
-    p variable_id
-
     if (Datum.where("key = ?", variable_id).blank?)
       all_states_info = "{"
       begin 
@@ -54,15 +52,12 @@ class MainController < ApplicationController
     end
   end
 
-  def query
-    # can access: params[:field]
-    # set @data_array to the newly formatted query
-    # PCT012A119,PCT012A118  
-    vars = params[:field]
-     @query_title = vars
+  def query_helper(vars)
     sum = Hash.new
-    # vars.scan(/((.*?(?=,))|(.*?(?=\z)))/) { |var|
-    vars.rpartition(",").each { |var|
+    vars.split(",").each { |var|
+      if (var == "," || var == "")
+        next
+      end
       info = dictionary_to_hash(get_all_state_info(var))
       if (sum["01"])
         info.each {|state, population|
@@ -73,19 +68,20 @@ class MainController < ApplicationController
       end
       }
     @data_array = hash_to_dictionary(sum)
+  end
+
+  def query
+    # can access: params[:field]
+    # set @data_array to the newly formatted query
+    vars = params[:field]
+    @query_title = vars
+
+    query_helper(vars)
+    
     render :index
   end
-  def search     # can access: params[:sex], params[:age], params[:race]
-    # where sex == "m|f|all" age == "[min]-[max]" and race == '[race1],[race2]...'
-    # any field could be 'all', for total
-    # eg. /search/m/47-49/white,hispanic
-    # eg. /search/f/all/white
-    # eg. /search/all/45-45/black
-    @query_title = params
-    
-    sex = params[:sex]
-    age = params[:age]
-    race = params[:race]
+
+  def search_helper(sex, age, race)
     if (sex!="all" && age=="all" && race=="all")
       if (sex=="f")
         return population_by_sex("female")
@@ -108,7 +104,10 @@ class MainController < ApplicationController
       @data_array = hash_to_dictionary(sum)
     elsif (sex=="all" && age=="all" && race!="all")
       sum = Hash.new
-      race.rpartition(",").each{ |individual_race|
+      race.split(",").each{ |individual_race|
+        if (individual_race == "," || individual_race == "")
+          next
+        end
         info = dictionary_to_hash(population_by_race(individual_race))
         if (sum["01"])
           info.each {|state, population|
@@ -147,7 +146,10 @@ class MainController < ApplicationController
         actual_sex="male"
       end
       sum = Hash.new
-      race.rpartition(",").each{ |individual_race|
+      race.split(",").each{ |individual_race|
+        if (individual_race == "," || individual_race == "")
+          next
+        end
         info = dictionary_to_hash(population_by_race_sex(individual_race,actual_sex))
         if (sum["01"])
           info.each {|state, population|
@@ -162,7 +164,10 @@ class MainController < ApplicationController
     elsif (sex=="all" && age!="all" && race!="all")
       sum = Hash.new
       min,hyphen,max=age.match(/([0-9]+)(-)([0-9]+)/).captures
-       race.rpartition(",").each{|individual_race|
+       race.split(",").each{|individual_race|
+        if (individual_race == "," || individual_race == "")
+          next
+        end
         (min.to_i..max.to_i).each {|i|
         info = dictionary_to_hash(population_by_age_race(i.to_s,individual_race))
         if (sum["01"])
@@ -183,7 +188,10 @@ class MainController < ApplicationController
       end
       sum = Hash.new
       min,hyphen,max=age.match(/([0-9]+)(-)([0-9]+)/).captures
-       race.rpartition(",").each{|individual_race|
+       race.split(",").each{|individual_race|
+        if (individual_race == "," || individual_race == "")
+          next
+        end
         (min.to_i..max.to_i).each {|i|
         info = dictionary_to_hash(population_by_age_race_sex(i.to_s,individual_race,actual_sex))
         if (sum["01"])
@@ -197,6 +205,22 @@ class MainController < ApplicationController
       }
       @data_array =hash_to_dictionary(sum)
     end
+  end
+
+  def search     # can access: params[:sex], params[:age], params[:race]
+    # where sex == "m|f|all" age == "[min]-[max]" and race == '[race1],[race2]...'
+    # any field could be 'all', for total
+    # eg. /search/m/47-49/white,hispanic
+    # eg. /search/f/all/white
+    # eg. /search/all/45-45/black
+    @query_title = params
+    
+    sex = params[:sex]
+    age = params[:age]
+    race = params[:race].gsub("_", " ")
+
+    search_helper(sex, age, race)
+  
     render :index
   end
   

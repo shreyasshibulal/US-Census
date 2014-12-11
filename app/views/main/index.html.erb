@@ -30,9 +30,10 @@ the following table, separated by commas:
 </form> 
 <input id="amount" readonly style="font-weight:bold;background-color:#eeeeee; border: solid 1px #707070;">
 <div id="slider-range"></div>
-<input type="checkbox" id="race1" value="white">White<br>
-<input type="checkbox" id="race2" value="hispanic">Hispanic<br>
-<input type="checkbox" id="race3" value="black">Black<br>
+<input type="checkbox" id="race1" value="white_alone">White<br>
+<input type="checkbox" id="race2" value="hispanic_or_latino">Hispanic<br>
+<input type="checkbox" id="race3" value="black_or_african_american_alone">Black<br>
+<input type="checkbox" id="race4" value="asian_alone">Asian<br>
 
 <button type="button" onclick="onAdvanceSearch()">Search</button>
 <br>
@@ -172,7 +173,7 @@ function onLoad() {
 
     for (i = 1; i <= 5; i++)
     {
-        var text = "> " + (start + 5 * increment).toLocaleString();
+        var text = "> " + (start + 4 * increment).toLocaleString();
         if (i > 1)
         {
             text = (start + (5-i) * increment).toLocaleString() + " - " + (start + (5-(i-1)) * increment).toLocaleString();
