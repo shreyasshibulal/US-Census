@@ -73,10 +73,8 @@ class MainController < ApplicationController
   def query
     # can access: params[:field]
     # set @data_array to the newly formatted query
-    vars = params[:field]
-    @query_title = vars
-
-    query_helper(vars)
+    @query_title = params[:field]
+    query_helper(params[:field])
     
     render :index
   end
@@ -214,12 +212,7 @@ class MainController < ApplicationController
     # eg. /search/f/all/white
     # eg. /search/all/45-45/black
     @query_title = params
-    
-    sex = params[:sex]
-    age = params[:age]
-    race = params[:race].gsub("_", " ")
-
-    search_helper(sex, age, race)
+    search_helper(params[:sex], params[:age], params[:race].gsub("_", " "))
   
     render :index
   end
@@ -417,26 +410,3 @@ class MainController < ApplicationController
   end
   
 end
-
-
-
-#info = MainController.new
-# puts info.population_by_age_race_sex("12","white alone","male")
-# puts ""
-# puts info.population_by_age("12")
-# puts ""
-# puts info.population_by_race("white alone")
-# puts ""
-# puts info.population_by_sex("female");
-# puts ""
-# puts info.population_by_sex("male")
-# puts ""
-# puts info.population_by_age_race("12","white alone")
-# puts ""
-# puts info.population_by_age_sex("12","male")
-# puts ""
-# puts info.population_by_race_sex("white alone", "male")
-# puts ""
-# puts info.population_by_race_sex("white alone", "female")
-
-

@@ -1,12 +1,5 @@
 require 'spec_helper'
 
-# require_relative '../app/controllers/application_controller'
-# require_relative '../app/controllers/data_controller'
-# require_relative '../app/controllers/main_controller'
-# require_relative '../app/models/datum'
-
-
-
 describe "Main Controller" do
 
   before :all do
@@ -23,6 +16,54 @@ describe "Main Controller" do
   end
 
   it "should query correctly" do
-    puts $main.population_by_age_race_sex("12", "white alone", "male")
+    expect($main.dictionary_to_hash($main.population_by_age_race_sex("12", "white alone", "male"))["34"]).not_to eq(nil)
+  end
+
+  it "should query by value" do
+    expect($main.query_helper("PCT012A119")).not_to eq(nil)
+  end
+
+  it "should query by multiple values" do
+    expect($main.query_helper("PCT012A119,PCT012A120")).not_to eq(nil)
+  end
+
+  it "should handle values that don't exist in database" do
+    expect($main.query_helper("PCT012A128")).not_to eq(nil)
+  end
+
+  it "should query by sex" do
+    expect($main.search_helper("male", "all", "all")).not_to eq(nil)
+  end
+
+  it "should query with females" do
+    expect($main.population_by_sex("female")).not_to eq(nil)
+  end
+
+  it "should query with females and race" do
+    expect($main.population_by_race_sex("white alone", "female")).not_to eq(nil)
+  end
+
+  it "should query by sex and race" do
+    expect($main.search_helper("male", "all", "white alone")).not_to eq(nil)
+  end
+
+  it "should query by sex and race and age" do
+    expect($main.search_helper("male", "12-14", "white alone")).not_to eq(nil)
+  end
+
+  it "should query by race" do
+    expect($main.search_helper("all", "all", "white alone")).not_to eq(nil)
+  end
+
+  it "should query by age" do
+    expect($main.search_helper("all", "12-14", "all")).not_to eq(nil)
+  end
+
+  it "should query by race and age" do
+    expect($main.search_helper("all", "12-14", "white alone")).not_to eq(nil)
+  end
+
+  it "should query by sex and age" do
+    expect($main.search_helper("male", "12-14", "all")).not_to eq(nil)
   end
 end
