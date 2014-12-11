@@ -108,7 +108,7 @@ class MainController < ApplicationController
       @data_array = hash_to_dictionary(sum)
     elsif (sex=="all" && age=="all" && race!="all")
       sum = Hash.new
-      race.scan(/(.*?(?=,))|(.*?(?=\z))/).each{ |individual_race|
+      race.rpartition(",").each{ |individual_race|
         info = dictionary_to_hash(population_by_race(individual_race))
         if (sum["01"])
           info.each {|state, population|
@@ -147,7 +147,7 @@ class MainController < ApplicationController
         actual_sex="male"
       end
       sum = Hash.new
-      race.scan(/(.*?(?=,))|(.*?(?=\z))/).each{ |individual_race|
+      race.rpartition(",").each{ |individual_race|
         info = dictionary_to_hash(population_by_race_sex(individual_race,actual_sex))
         if (sum["01"])
           info.each {|state, population|
@@ -162,7 +162,7 @@ class MainController < ApplicationController
     elsif (sex=="all" && age!="all" && race!="all")
       sum = Hash.new
       min,hyphen,max=age.match(/([0-9]+)(-)([0-9]+)/).captures
-      race.scan(/(.*?(?=,))|(.*?(?=\z))/).each{|individual_race|
+       race.rpartition(",").each{|individual_race|
         (min.to_i..max.to_i).each {|i|
         info = dictionary_to_hash(population_by_age_race(i.to_s,individual_race))
         if (sum["01"])
@@ -183,7 +183,7 @@ class MainController < ApplicationController
       end
       sum = Hash.new
       min,hyphen,max=age.match(/([0-9]+)(-)([0-9]+)/).captures
-      race.scan(/(.*?(?=,))|(.*?(?=\z))/).each{|individual_race|
+       race.rpartition(",").each{|individual_race|
         (min.to_i..max.to_i).each {|i|
         info = dictionary_to_hash(population_by_age_race_sex(i.to_s,individual_race,actual_sex))
         if (sum["01"])
