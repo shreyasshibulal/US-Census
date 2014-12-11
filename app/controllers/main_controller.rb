@@ -219,7 +219,7 @@ class MainController < ApplicationController
     variable_id=""
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?(sex+": !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?(sex+": !! "+age+" year"))
           variable_id = variable['xml:id']
           break
         end
@@ -235,7 +235,7 @@ class MainController < ApplicationController
     variable_id_female=""
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?("male: !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?("male: !! "+age+" year"))
           variable_id_male = variable['xml:id']
           break
         end
@@ -243,7 +243,7 @@ class MainController < ApplicationController
       }
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?("female: !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?("female: !! "+age+" year"))
           variable_id_female = variable['xml:id']
           break
         end
@@ -316,7 +316,7 @@ class MainController < ApplicationController
     variable_id_female=""
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?("male: !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?("male: !! "+age+" year"))
           variable_id_male = variable['xml:id']
           break
         end
@@ -324,7 +324,7 @@ class MainController < ApplicationController
       }
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?("female: !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age ("+race+") [209]") && variable['label'].downcase.include?("female: !! "+age+" year"))
           variable_id_female = variable['xml:id']
           break
         end
@@ -381,7 +381,7 @@ class MainController < ApplicationController
     variable_id=""
     @variables.each{|variable|
       if (variable['xml:id'] && variable['label'] && variable['concept'])
-        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?(sex+": !! "+age+" years"))
+        if (variable['concept'].downcase.include?("sex by age [209]") && variable['label'].downcase.include?(sex+": !! "+age+" year"))
           variable_id = variable['xml:id']
           break
         end
